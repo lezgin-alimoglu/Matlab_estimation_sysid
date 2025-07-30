@@ -2,8 +2,8 @@ close all
 clear all
 
 %% System
-A = [4.7 0.4 -3.1;
-     3.9 0   3.8;
+A = [4.9 0.4 -3.1;
+     3.9 0   3.9;
      0   0   1.1];      
 B = [1; 1; 1];
 C = [1 1 0];
@@ -16,13 +16,14 @@ x0 = [10; 10; -10];
 xhat0 = [0; 0; 0]; 
 
 
-K_matrix = [-2 -1-1i -1+1i];     % State feedback için hedef kutuplar
-L_matrix = [-3 -2 -1];         % Observer için hedef kutuplar
+K_matrix = [-5 -6 -7];     % State feedback için hedef kutuplar
+L_matrix = [-9 -10 -11];
+         
 
 K = place(A,B,K_matrix);        % State feedback gain
-L = place(A_hat',C',L_matrix)';     % Observer gain
+L = place(A',C',L_matrix)';     % Observer gain
 
-N = -inv(C * inv(A_hat - B*K) * B);
+N = -inv(C * inv(A - B*K) * B);
 
 
 ref = N*10*ones(3,1);
@@ -39,7 +40,7 @@ sys_aug = ss(A_aug, B_aug, eye(6), zeros(6,2));
 
 
 %% Simülasyon parametreleri
-t = 0:0.01:30;
+t = 0:0.01:15;
 
 sigma_w = 0.2;                         % process noise
 w = sigma_w * randn(size(t));           
